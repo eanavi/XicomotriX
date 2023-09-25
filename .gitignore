@@ -1,5 +1,6 @@
 .entv/
 .entv
+.env
 
 __pychache__/
 *.py[cod]
