@@ -7,3 +7,5 @@ drop table empresa cascade;
 drop table paciente cascade;
 drop table servicio cascade;
 drop table telefono cascade;
+drop table item cascade;
+drop table acceso cascade;

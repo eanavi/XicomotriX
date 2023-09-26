@@ -121,6 +121,7 @@ create table servicio(
 	id_padre int,
 	nombre varchar(40),
 	tipo varchar(2),
+	ubicacion varchar(200),
 	fecha_reg timestamp default current_timestamp,
 	usuario_reg varchar(20),
 	ip_reg cidr,
@@ -130,5 +131,74 @@ create table servicio(
 	constraint fk_jefe_servicio foreign key(id_jefe) references public.empleado(id_empleado),
 	constraint fk_nodo_padre foreign key(id_padre) references public.servicio(id_servicio)
 );
+
+create table item( 
+	id_item serial4 not null,
+	id_servicio int,
+	cargo varchar(20),
+	tipo char(2), 
+	salario_basico decimal(10, 3),
+	fecha_reg timestamp default current_timestamp,
+	usuario_reg varchar(20),
+	ip_reg cidr,
+	estado_reg char(1),
+	constraint pk_item primary key (id_item),
+	constraint fk_servicio_item foreign key(id_servicio) references public.servicio(id_servicio) 
+);
+
+create table acceso( 
+	id_acceso serial4 not null,
+	id_item int,
+	nombre_acceso varchar(50),
+	ruta varchar(200),
+	fecha_reg timestamp default current_timestamp,
+	usuario_reg varchar(20),
+	ip_reg cidr,
+	estado_reg char(1),
+	constraint pk_acceso primary key(id_acceso),
+	constraint fk_item_acceso foreign key(id_item) references public.item(id_item)
+);
+create table contrato(
+	id_contrato serial4 not null,
+	fecha date default current_date,
+	id_item int,
+	idempleado int,
+	tipo_empleado char(1),
+	fecha_inicio date,
+	fecha_fin date,
+	fecha_reg timestamp default current_timestamp,
+	usuario_reg varchar(20),
+	ip_reg cidr,
+	estado_reg char(1),
+	
+	constraint pk_contrato primary key(id_contrato),
+	constraint fk_item_contrato foreign key(id_item) references public.item(id_item)
+);
+
+create table usuario(
+	id_usuario serial4 not null,
+	nombre_usuario varchar(20),
+	clave_usuario varchar(250),
+	id_contrato int,
+	fecha_reg timestamp default current_timestamp,
+	usuario_reg varchar(20),
+	ip_reg cidr,
+	estado_reg char(1),
+	
+	constraint pk_usuario primary key(id_usuario),
+	constraint fk_contrato_usuario foreign key(id_contrato) references public.contrato(id_contrato)
+);
+
+create table lista( 
+	id_lista serial4 not null,
+	codigo_texto char(2),
+	grupo varchar(20),
+	orden smallint,
+	descripcion varchar(200),
+	estado_reg char(1)
+);
+
+
+
 
 --constraint fk_persona_paciente foreign key(id_persona) references public.persona(id_persona)
